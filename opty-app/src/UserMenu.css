@@ -1,0 +1,118 @@
+/* O fundo escuro (overlay) */
+.user-menu-overlay {
+    position: fixed;
+    /* Fica por cima de tudo */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Preto com 40% de opacidade */
+    z-index: 99;
+    /* Fica atrás do menu, mas na frente do site */
+}
+
+/* O menu (sidebar) */
+.user-menu-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    /* Começa "colado" na direita */
+    width: 350px;
+    /* Largura do menu */
+    height: 100vh;
+    /* Altura total */
+    background-color: #ffffff;
+    box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    /* Fica na frente de tudo */
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+}
+
+/* Seção do Perfil (topo) */
+.user-profile-section {
+    display: flex;
+    align-items: center;
+    padding: 30px 25px;
+    border-bottom: 1px solid #eee;
+}
+
+.user-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #a8d5a1;
+    /* Nosso verde */
+    color: #2f2f2f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+.user-info h4 {
+    margin: 0 0 5px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.user-info p {
+    margin: 0;
+    font-size: 14px;
+    color: #777;
+}
+
+/* Links de Navegação */
+.user-menu-nav {
+    flex: 1;
+    /* Ocupa o espaço do meio */
+    padding: 20px 0;
+}
+
+.user-menu-nav a {
+    display: flex;
+    align-items: center;
+    padding: 18px 25px;
+    text-decoration: none;
+    color: #555;
+    font-size: 16px;
+}
+
+.user-menu-nav a:hover {
+    background-color: #f9f9f9;
+}
+
+.user-menu-nav a span {
+    font-size: 20px;
+    margin-right: 20px;
+    width: 25px;
+    text-align: center;
+}
+
+/* Link de Sair (rodapé) */
+.user-menu-logout {
+    padding: 20px 25px;
+    border-top: 1px solid #eee;
+}
+
+.user-menu-logout a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #d9534f;
+    /* Vermelho */
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.logout-icon {
+    width: 20px;
+    height: 20px;
+    background-color: #d9534f;
+    margin-right: 20px;
+    border-radius: 4px;
+}

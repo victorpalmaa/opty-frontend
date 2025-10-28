@@ -1,0 +1,197 @@
+.homepage-container {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    /* Um fundo cinza bem claro */
+    min-height: 100vh;
+}
+
+/* ===== CABEÇALHO ===== */
+.homepage-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 80px;
+    /* Mais padding lateral */
+    background-color: #ffffff;
+    border-bottom: 1px solid #eee;
+}
+
+.header-logo {
+    font-size: 32px;
+    color: #333;
+    margin: 0;
+}
+
+.header-user-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    /* Placeholder do ícone */
+    cursor: pointer;
+}
+
+/* ===== CONTEÚDO PRINCIPAL ===== */
+.homepage-main {
+    max-width: 1200px;
+    /* Centraliza o conteúdo */
+    margin: 0 auto;
+    /* Centraliza */
+    padding: 40px 20px;
+}
+
+/* --- Seção de Busca --- */
+.search-section {
+    text-align: center;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.search-section h2 {
+    font-size: 36px;
+    margin: 0 0 10px 0;
+}
+
+.search-section p {
+    font-size: 18px;
+    color: #777;
+    margin-bottom: 30px;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 50px;
+    /* Bordas arredondadas */
+    padding: 10px 20px;
+    max-width: 700px;
+    margin: 0 auto 20px auto;
+}
+
+.search-bar span {
+    font-size: 20px;
+    margin-right: 10px;
+    color: #aaa;
+}
+
+.search-bar input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    background: transparent;
+}
+
+.popular-searches {
+    font-size: 14px;
+    color: #555;
+}
+
+.popular-searches span {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.popular-searches a {
+    color: #777;
+    text-decoration: none;
+    background-color: #f0f0f0;
+    padding: 6px 12px;
+    border-radius: 20px;
+    margin: 0 5px;
+}
+
+/* --- Cabeçalho das Seções --- */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+
+.section-header h3 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.see-all-link {
+    color: #a8d5a1;
+    /* Nosso verde */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* --- Grids --- */
+.category-grid,
+.recent-grid,
+.product-grid {
+    display: grid;
+    gap: 20px;
+}
+
+/* --- Categorias Populares --- */
+.category-grid {
+    grid-template-columns: repeat(6, 1fr);
+    /* 6 colunas */
+}
+
+.category-card {
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    font-weight: bold;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* --- Últimas Buscas --- */
+.recent-grid {
+    grid-template-columns: repeat(4, 1fr);
+    /* 4 colunas */
+}
+
+.recent-card-placeholder {
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    height: 120px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* --- Ofertas em Destaque --- */
+.product-grid {
+    grid-template-columns: repeat(5, 1fr);
+    /* 5 colunas */
+}
+
+.product-card {
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    /* Para a imagem não vazar */
+}
+
+.product-image-placeholder {
+    height: 180px;
+    background-color: #f0f0f0;
+}
+
+.product-card p {
+    text-align: center;
+    font-weight: bold;
+    padding: 15px;
+    margin: 0;
+}
