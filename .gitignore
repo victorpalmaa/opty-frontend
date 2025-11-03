@@ -23,3 +23,25 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# 1. Ignora tudo
+*
+
+# 2. NÃO ignora o arquivo .gitignore
+!.gitignore
+
+# 3. NÃO ignora a pasta 'src'
+!src/
+
+# 4. Ignora tudo dentro de 'src' (para anular a regra anterior)
+src/*
+
+# 5. NÃO ignora a pasta 'src/components'
+!src/components/
+
+# 6. Ignora tudo dentro de 'src/components'
+src/components/*
+
+# 7. NÃO ignora a pasta 'src/components/ui' e seu conteúdo
+!src/components/ui/
+!src/components/ui/**
