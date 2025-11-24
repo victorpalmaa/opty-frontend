@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import {
   Tag,
   Send,
@@ -29,9 +29,11 @@ import { useSupervisorQueue } from '@/hooks/useSupervisorQueue';
 
 const ChatSupervisor = () => {
   const { toast } = useToast();
+  const { sessionId: paramSessionId } = useParams();
   const [message, setMessage] = useState('');
   const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
 
   // Hook to manage queue of available sessions (only enabled when no active session)
   const { availableSessions, isConnected: queueConnected, acceptSession } = useSupervisorQueue({
@@ -70,10 +72,20 @@ const ChatSupervisor = () => {
     if (scrollAreaRef.current) {
       const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
       if (scrollContainer) {
-        scrollContainer.scrollTop = scrollContainer.scrollHeight;
+        (scrollContainer as HTMLElement).scrollTop = (scrollContainer as HTMLElement).scrollHeight;
       }
     }
+    if (bottomRef.current && typeof bottomRef.current.scrollIntoView === 'function') {
+      bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   }, [messages]);
+
+  useEffect(() => {
+    if (paramSessionId && !activeSessionId) {
+      setActiveSessionId(paramSessionId);
+      toast({ title: 'Conectando', description: `Entrando na sessão #${paramSessionId.substring(0, 8)}...` });
+    }
+  }, [paramSessionId, activeSessionId, toast]);
 
   const handleSendMessage = () => {
     if (!message.trim()) return;
@@ -309,6 +321,7 @@ const ChatSupervisor = () => {
                     />
                   ))
                 )}
+                <div ref={bottomRef} />
               </div>
             </ScrollArea>
 

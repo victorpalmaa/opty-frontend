@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import ChatMessage from '@/components/ChatMessage';
 import { useToast } from '@/hooks/use-toast';
 import { useClientChat } from '@/hooks/useClientChat';
@@ -12,7 +13,9 @@ import { useClientChat } from '@/hooks/useClientChat';
 const ChatCliente = () => {
   const { toast } = useToast();
   const [message, setMessage] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
 
   const {
     messages,
@@ -27,8 +30,11 @@ const ChatCliente = () => {
     if (scrollAreaRef.current) {
       const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
       if (scrollContainer) {
-        scrollContainer.scrollTop = scrollContainer.scrollHeight;
+        (scrollContainer as HTMLElement).scrollTop = (scrollContainer as HTMLElement).scrollHeight;
       }
+    }
+    if (bottomRef.current && typeof bottomRef.current.scrollIntoView === 'function') {
+      bottomRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages]);
 
@@ -37,6 +43,22 @@ const ChatCliente = () => {
 
     sendChatMessage(message);
     setMessage('');
+  };
+
+  const handleAttachClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    const names = Array.from(files).map((f) => f.name).join(', ');
+    sendChatMessage(`Anexo: ${names}`);
+    e.target.value = '';
+  };
+
+  const insertEmoji = (emoji: string) => {
+    setMessage((prev) => `${prev}${emoji}`);
   };
 
   return (
@@ -161,6 +183,7 @@ const ChatCliente = () => {
                     />
                   ))
                 )}
+                <div ref={bottomRef} />
               </div>
             </ScrollArea>
 
@@ -168,34 +191,24 @@ const ChatCliente = () => {
             <div className='border-t border-border p-4 bg-background/50'>
               <div className='flex items-end gap-2'>
                 <div className='flex gap-2'>
-                  <Button
-                    type='button'
-                    variant='ghost'
-                    size='icon'
-                    className='flex-shrink-0'
-                    onClick={() =>
-                      toast({
-                        title: 'Em breve',
-                        description: 'Funcionalidade de anexo em desenvolvimento.',
-                      })
-                    }
-                  >
+                  <input ref={fileInputRef} type='file' multiple className='hidden' onChange={handleFileChange} />
+                  <Button type='button' variant='ghost' size='icon' className='flex-shrink-0' onClick={handleAttachClick}>
                     <Paperclip className='h-5 w-5' />
                   </Button>
-                  <Button
-                    type='button'
-                    variant='ghost'
-                    size='icon'
-                    className='flex-shrink-0'
-                    onClick={() =>
-                      toast({
-                        title: 'Em breve',
-                        description: 'Funcionalidade de emoji em desenvolvimento.',
-                      })
-                    }
-                  >
-                    <Smile className='h-5 w-5' />
-                  </Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button type='button' variant='ghost' size='icon' className='flex-shrink-0'>
+                        <Smile className='h-5 w-5' />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align='start'>
+                      <div className='grid grid-cols-6 gap-2 p-1 text-xl'>
+                        {['😀','😂','😊','😍','😉','👍','🙏','🎉','🔥','💡','📎','💬'].map((e) => (
+                          <DropdownMenuItem key={e} onClick={() => insertEmoji(e)}>{e}</DropdownMenuItem>
+                        ))}
+                      </div>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
 
                 <div className='flex-1 flex gap-2'>
@@ -206,6 +219,13 @@ const ChatCliente = () => {
                     onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                     className='flex-1'
                   />
+                  {sessionId && (
+                    <Button type='button' variant='outline' asChild>
+                      <Link to={`/chat/supervisor/${sessionId}`}>
+                        Atendimento
+                      </Link>
+                    </Button>
+                  )}
                   <Button
                     type='button'
                     variant='gradient'

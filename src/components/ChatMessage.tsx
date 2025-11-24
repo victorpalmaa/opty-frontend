@@ -53,7 +53,7 @@ const ChatMessage = ({ type, message, time, senderName }: ChatMessageProps) => {
               : "bg-muted text-foreground rounded-tl-sm"
           )}
         >
-          <p className="text-sm leading-relaxed break-words">{message}</p>
+          <p className="text-sm leading-relaxed break-words whitespace-pre-wrap">{message}</p>
         </div>
 
         {/* Timestamp */}

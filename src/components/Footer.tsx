@@ -1,25 +1,43 @@
 import { Link } from "react-router-dom";
 import { Tag, Github, Linkedin, Twitter } from "lucide-react";
 
-const Footer = () => {
+interface FooterProps { loggedIn?: boolean }
+const Footer = ({ loggedIn = false }: FooterProps) => {
   const currentYear = new Date().getFullYear();
 
   const footerLinks = {
     company: [
-      { name: "Sobre", href: "/#about" },
-      { name: "Contato", href: "/#contact" },
-      { name: "Carreiras", href: "#" },
+      { name: "Sobre", href: loggedIn ? "/dashboard/sobre" : "/sobre" },
+      { name: "Contato", href: "/chat/cliente" },
     ],
     legal: [
-      { name: "Termos de Uso", href: "#" },
-      { name: "Política de Privacidade", href: "#" },
-      { name: "Cookies", href: "#" },
+      { name: "Termos de Uso", href: loggedIn ? "/dashboard/termos" : "/termos" },
+      { name: "Política de Privacidade", href: loggedIn ? "/dashboard/privacidade" : "/privacidade" },
+      { name: "Cookies", href: loggedIn ? "/dashboard/cookies" : "/cookies" },
     ],
     social: [
       { name: "GitHub", icon: Github, href: "#" },
       { name: "LinkedIn", icon: Linkedin, href: "#" },
       { name: "Twitter", icon: Twitter, href: "#" },
     ],
+  };
+
+  const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith("/#")) {
+      e.preventDefault();
+      const id = href.replace("/#", "");
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        el.classList.add("section-highlight");
+        setTimeout(() => el.classList.remove("section-highlight"), 600);
+      }
+    }
+  };
+
+  const handleRoutePulse = () => {
+    document.body.classList.add('page-pulse');
+    setTimeout(() => document.body.classList.remove('page-pulse'), 300);
   };
 
   return (
@@ -61,6 +79,7 @@ const Footer = () => {
                 <li key={link.name}>
                   <a
                     href={link.href}
+                    onClick={(e) => handleAnchorClick(e, link.href)}
                     className="text-muted-foreground hover:text-primary transition-colors"
                   >
                     {link.name}
@@ -78,7 +97,13 @@ const Footer = () => {
                 <li key={link.name}>
                   <a
                     href={link.href}
+                    onClick={(e) => {
+                      if (!link.href.startsWith('http')) handleRoutePulse();
+                      handleAnchorClick(e, link.href);
+                    }}
                     className="text-muted-foreground hover:text-primary transition-colors"
+                    target={link.href.startsWith('http') ? '_blank' : undefined}
+                    rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                   >
                     {link.name}
                   </a>

@@ -3,20 +3,13 @@ import { Toaster } from '@/components/ui/toaster';
 import { Toaster as Sonner } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
+import { useEffect } from 'react';
 
 
 /* --- PAGES IMPORTS --- */
-import Index from './pages/Index';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Onboarding from './pages/Onboarding';
-import Dashboard from './pages/Dashboard';
-import Resultados from './pages/Resultados';
-import Perfil from './pages/Perfil';
-import ChatCliente from './pages/ChatCliente';
-import ChatSupervisor from './pages/ChatSupervisor';
-import NotFound from './pages/NotFound';
+import AnimatedRoutes from '@/components/AnimatedRoutes';
+import CookieConsent from '@/components/CookieConsent';
 
 
 /* --- CODE --- */
@@ -25,28 +18,37 @@ import NotFound from './pages/NotFound';
 const queryClient = new QueryClient();
 
 // Define the main App component
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<Index />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/register' element={<Register />} />
-          <Route path='/onboarding' element={<Onboarding />} />
-          <Route path='/dashboard' element={<Dashboard />} />
-          <Route path='/resultados' element={<Resultados />} />
-          <Route path='/perfil' element={<Perfil />} />
-          <Route path='/chat/cliente' element={<ChatCliente />} />
-          <Route path='/chat/supervisor/:sessionId?' element={<ChatSupervisor />} />
-          <Route path='*' element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  useEffect(() => {
+    const applyTheme = () => {
+      const saved = localStorage.getItem('theme') || 'auto';
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const isDark = saved === 'dark' || (saved === 'auto' && prefersDark);
+      document.documentElement.classList.toggle('dark', isDark);
+    };
+    applyTheme();
+    const mql = window.matchMedia('(prefers-color-scheme: dark)');
+    const handler = () => {
+      const saved = localStorage.getItem('theme') || 'auto';
+      if (saved === 'auto') applyTheme();
+    };
+    mql.addEventListener('change', handler);
+    return () => mql.removeEventListener('change', handler);
+  }, []);
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <CookieConsent />
+        <BrowserRouter>
+          <AnimatedRoutes />
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 
 // Export the App component

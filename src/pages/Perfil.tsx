@@ -9,6 +9,8 @@ import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import DashboardNav from '@/components/DashboardNav';
 import Footer from '@/components/Footer';
+import { Sheet, SheetContent } from '@/components/ui/sheet';
+import { Bell, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const Perfil = () => {
@@ -93,9 +95,10 @@ const Perfil = () => {
 
   const passwordStrength = getPasswordStrength(passwordData.newPassword);
 
+  const [showNotifications, setShowNotifications] = useState(false);
   return (
-    <div className='min-h-screen flex flex-col bg-background'>
-      <DashboardNav userName='João' />
+    <div className='min-h-screen flex flex-col bg-gradient-soft'>
+      <DashboardNav userName='João' onNotificationsClick={() => setShowNotifications(true)} />
 
       <div className='flex-1 container mx-auto px-4 py-8'>
         <div className='max-w-6xl mx-auto'>
@@ -197,6 +200,7 @@ const Perfil = () => {
                             onChange={(e) =>
                               setPersonalInfo({ ...personalInfo, birthDate: e.target.value })
                             }
+                            className='bg-background'
                           />
                         </div>
 
@@ -443,7 +447,35 @@ const Perfil = () => {
         </div>
       </div>
 
-      <Footer />
+      <Footer loggedIn />
+
+      <Sheet open={showNotifications} onOpenChange={setShowNotifications}>
+        <SheetContent side='left' className='w-96 p-0' hideClose>
+          <div className='bg-gradient-primary text-white p-4 flex items-center justify-between'>
+            <div className='flex items-center gap-3'>
+              <div className='w-9 h-9 rounded-lg bg-white/20 flex items-center justify-center'>
+                <Bell className='h-5 w-5' />
+              </div>
+              <div>
+                <div className='text-sm font-semibold'>Central de Notificações</div>
+                <div className='text-xs opacity-80'>Atualizações e alertas do Opty</div>
+              </div>
+            </div>
+            <button className='rounded-md hover:bg-white/10 p-2' aria-label='Fechar' onClick={() => setShowNotifications(false)}>
+              <X className='h-5 w-5' />
+            </button>
+          </div>
+          <div className='p-4 space-y-3'>
+            <div className='glass p-4 rounded-xl border border-primary/20'>
+              <div className='flex items-center justify-between mb-1'>
+                <div className='text-sm font-medium'>Atualização de perfil</div>
+                <span className='text-xs text-muted-foreground'>ontem</span>
+              </div>
+              <p className='text-sm text-muted-foreground'>Suas preferências foram sincronizadas com sucesso.</p>
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 };
